@@ -1,4 +1,11 @@
 var main = require("./main");
+var importjson = require("data/importjson.js");
+
+
+exports["test parse case"] = function(assert) {
+  var testcase = parsePlainTextCase(mockCaseStr);
+  assert.equal(mockCaseObj, testcase, "Plain text case is parse correctly");
+}
 
 exports["test main"] = function(assert) {
   assert.pass("Unit test running!");
