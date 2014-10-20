@@ -27,3 +27,43 @@ function inputCase(testcase){
   document.getElementById('popup').style.display= 'hidden';
 }
 
+function parseField(fieldName, caseText){
+  var regex = new RegExp(fieldName + ':(.*)\n')
+  var matches = regex.exec(caseText);
+  return matches[1].trim();
+}
+
+function parseOneStep(stepsText){
+  var stepRegex = /When((.|[\n\r])*?)Then(.*)[\n\r]((.|[\n\r])*)/
+  var stepMatch = stepRegex.exec(stepsText);
+  return {'instr': stepMatch[1].trim(), 'expect':stepMatch[3].trim(), 'rest': stepMatch[4] };
+}
+function parseSteps(caseText){
+  var stepsRegex = /When((.|[\n\r])*)/
+  var matches = stepsRegex.exec(caseText)
+  var steps = matches[0]
+  var stepsList = []
+  var rest = steps
+  do {
+    var step = parseOneStep(rest)
+    stepsList.push({"Instruction": step.instr, "Expected": step.expect});
+    rest = step.rest
+    //console.log(rest)
+  } while (rest != "");
+  //console.log(stepMatch)
+
+  return stepsList
+}
+
+function parsePlainTextCase(caseText){
+  var caseObj0 = {};
+  var fieldNames = ['Product', 'Version', 'Suite', 'ID Prefix', 'Priority', 'Name', 'Description']
+  fieldNames.forEach(function(fieldName){
+    caseObj0[fieldName] = parseField(fieldName, caseText);
+  })
+
+  caseObj0["Add Tags"] = [""]; //Don't support yet
+  caseObj0["Instructions"] = parseSteps(caseText)
+
+  return [caseObj0]
+}
