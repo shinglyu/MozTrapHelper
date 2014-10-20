@@ -11,9 +11,10 @@ function handleFileSelect(evt) {
 
   reader.onload = (function (theFile) {
     return function (e) {
-      var JsonObj = e.target.result;
-      var parsedJSON = JSON.parse(JsonObj);
-      inputCase(parsedJSON[0]); //Currently only supports one case
+      var fileContent= e.target.result;
+      //var parsedJSON = JSON.parse(JsonObj);
+      var parsedCase = parsePlainTextCase(fileContent);
+      inputCase(parsedCase[0]); //Currently only supports one case
 
     };
   })(f);

@@ -1,0 +1,13 @@
+Product: Firefox OS
+Version: v2.1
+Suite: [Comms] Cost Control (cleanup for v2.1)
+ID Prefix: 
+Priority: 2
+Name: This is a test title 
+Add Tags: 
+Description: This is a test desc 
+
+When step001
+Then expect001
+When step002
+Then expect002
