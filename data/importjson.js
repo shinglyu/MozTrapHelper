@@ -1,5 +1,5 @@
 self.on("click", function (node, data) {
-  $('<div id="popup" style="display: inline-block; position: absolute; top: 25%; left: 25%; width: 25%; height: 25%; min-width:0px; padding: 16px; border: 16px solid orange; background-color: white;">Select a file to import<input type="file" id="files" name="files[]" /></div>').appendTo('body');
+  $('<div id="popup" style="display: inline-block; position: absolute; top: 25%; left: 25%; width: 25%; height: 25%; min-width:0px; padding: 16px; border: 16px solid orange; background-color: white;">Select a file to import<br><a href="https://cdn.rawgit.com/shinglyu/MozTrapAnnotator/master/doc/moztraphelper_doc.html#Testcase%20Syntax">File syntax guide</a><br><input type="file" id="files" name="files[]" /></div>').appendTo('body');
 
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
 });
