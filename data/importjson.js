@@ -1,5 +1,5 @@
 self.on("click", function (node, data) {
-  $('<div id="popup" style="display: inline-block; position: absolute; top: 25%; left: 25%; width: 25%; height: 25%; min-width:0px; padding: 16px; border: 16px solid orange; background-color: white;">Select a JSON file to import<input type="file" id="files" name="files[]" /></div>').appendTo('body');
+  $('<div id="popup" style="display: inline-block; position: absolute; top: 25%; left: 25%; width: 25%; height: 25%; min-width:0px; padding: 16px; border: 16px solid orange; background-color: white;">Select a file to import<input type="file" id="files" name="files[]" /></div>').appendTo('body');
 
   document.getElementById('files').addEventListener('change', handleFileSelect, false);
 });
@@ -40,6 +40,9 @@ function inputCase(testcase){
   var currExpected = currStep.find('div.expected-field textarea').first();
 
   testcase.Instructions.forEach(function(step){
+
+    //alert(step.Instruction);
+
     currInstr.focus();
     currInstr.val(step.Instruction);
     currExpected.val(step.Expected);
@@ -61,6 +64,9 @@ function parseField(fieldName, caseText){
 function parseOneStep(stepsText){
   var stepRegex = /When((.|[\n\r])*?)Then(.*)[\n\r]((.|[\n\r])*)/
   var stepMatch = stepRegex.exec(stepsText);
+  if (!stepMatch){
+    throw "No steps found"
+  }
   return {'instr': stepMatch[1].trim(), 'expect':stepMatch[3].trim(), 'rest': stepMatch[4] };
 }
 function parseSteps(caseText){
@@ -69,13 +75,16 @@ function parseSteps(caseText){
   var steps = matches[0]
   var stepsList = []
   var rest = steps
-  do {
-    var step = parseOneStep(rest)
-    stepsList.push({"Instruction": step.instr, "Expected": step.expect});
-    rest = step.rest
-    //console.log(rest)
-  } while (rest != "");
-  //console.log(stepMatch)
+  try {
+    do {
+      var step = parseOneStep(rest)
+      stepsList.push({"Instruction": step.instr, "Expected": step.expect});
+      rest = step.rest
+      //console.log(rest)
+    } while (rest != "");
+  } catch (e) {
+    /* handle error */
+  }
 
   return stepsList
 }

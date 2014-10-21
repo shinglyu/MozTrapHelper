@@ -1,0 +1,24 @@
+<div class="selectbox itemlist">
+<article class="selectitem" data-title="[HOME SCREEN] Access and exit from edit mode" data-product-id="">
+  <input name="bulk-select" value="1316" class="bulk-value" id="bulk-select-1316" type="checkbox">
+  <div class="listitem itemhead bulk-item">
+    <label for="bulk-select-1316" class="bulk-type" title="select or drag">bulk select 1316</label>
+    <div class="name-tags">
+      <h5 class="title" title="[HOME SCREEN] Access and exit from edit mode">[HOME SCREEN] Access and exit from edit mode</h5>
+    <ul class="tags">
+      <li><a href="#" title="filter by home-025" class="filter-link tag" data-type="tag">home-025</a></li>
+      <li><a href="#" title="filter by v1.0" class="filter-link tag" data-type="tag">v1.0</a></li>
+      <li><a href="#" title="filter by gaia" class="filter-link tag" data-type="tag">gaia</a></li>
+      <li><a href="#" title="filter by smoketest" class="filter-link tag" data-type="tag">smoketest</a></li>
+    </ul>
+    </div>
+    <div class="author vcard"><span class="fn"></span></div>
+    <div class="priority">1</div>
+  </div>
+</article>
+
+
+var list = document.getElementsByClassName('selectbox itemlist')
+list[0].getElementsByClassName('selectitem')
+list[0].getElementsByClassName('selectitem')[0].getAttribute('data-title')
+list[0].getElementsByClassName('selectitem')[0].getElementsByClassName('bulk-value')[0].checked = true
