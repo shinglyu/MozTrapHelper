@@ -80,7 +80,6 @@ function parseSteps(caseText){
       var step = parseOneStep(rest)
       stepsList.push({"Instruction": step.instr, "Expected": step.expect});
       rest = step.rest
-      //console.log(rest)
     } while (rest != "");
   } catch (e) {
     /* handle error */

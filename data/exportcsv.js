@@ -29,6 +29,4 @@ self.on("click", function (node, data) {
   document.body.appendChild(link);
 
   link.click(); 
-
-  console.log('csv exported')
 });
