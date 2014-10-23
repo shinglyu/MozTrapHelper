@@ -5,8 +5,7 @@ var mockCaseObj = [
   {
     "Product":    "Firefox OS",
     "Version":    "v2.1",
-    "Suite":      "[Comms] Cost Control (cleanup for v2.1)",
-    "ID Prefix":   "",
+    "Suite":      "[Comms] Cost Control (cleanup for v2.1)", "ID Prefix":   "",
     "Priority":   "2",
     "Name":       "This is a test title",
     "Add Tags":  [""],
@@ -83,5 +82,28 @@ describe('Parse plaintext cases', function(){
       expect(actual.Expected).to.be.equal(expected.Expected)
     }
   });
+});
+
+var mockCaseList = "+, \"Add 001\",bla \n-,\"Remove 001\", efjeij, jij\n+, \"Add 002\", jeifjei, ejfiej\n-, \"Remove 002\", jfeijfei\n,fjiejfi,fjiejfi\n,efjiejf,efjiej"
+var mockSuitePatch = {'adds': ["Add 001", "Add 002"], 'removes': ["Remove 001", "Remove 002"]};
+
+describe('Import suite from file', function(){
+
+  it('Can parse suites add/remove list', function(){
+    //var fieldNames = Object.keys(mockCaseObj[0])
+    var suitePatch = parseSuitePatch(mockCaseList);
+    expect(suitePatch.adds).to.have.length(2)
+    expect(suitePatch.removes).to.have.length(2)
+
+    for (var idx in suitePatch.adds){
+      expect(suitePatch.adds[idx]).to.be.equal(mockSuitePatch.adds[idx])
+    }
+
+    for (var idx in suitePatch.removes){
+      expect(suitePatch.removes[idx]).to.be.equal(mockSuitePatch.removes[idx])
+    }
+
+  });
+
 });
 
