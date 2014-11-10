@@ -14,6 +14,7 @@ var fileSelectorHtml = '\
   }\
 </style> \
 <div id="popup"> \
+  <h3>Import a Suite</h3>\
   Select a file to import \
   <br>\
   <a href="https://rawgit.com/shinglyu/MozTrapAnnotator/master/doc/moztraphelper_doc.html#Suite%20File%20Syntax">File syntax guide</a>\
@@ -52,6 +53,7 @@ function parseSuitePatch(caseText){
     var regex = /([+-]?)\ *,\ *"?(.*?)"?\ *,(.*)/
     var matches = regex.exec(line)
     if (matches !== null){
+      //console.log(matches)
       switch (matches[1]) {
         case '+':
           suitePatch.adds.push(matches[2].trim())
@@ -64,6 +66,8 @@ function parseSuitePatch(caseText){
       }
     }
   })
+  suitePatch.adds = unique(suitePatch.adds)
+  suitePatch.removes = unique(suitePatch.removes)
   return suitePatch
 }
 //function selectCases(caselist, listDom){ }
@@ -84,12 +88,7 @@ function selectCasesToAdd(suitePatch){
       notFoundCases.push(suitePatch.adds[pidx])
     }
   }
-  var warnMsg = "Can't find the following cases:\n";
-  notFoundCases.forEach(function(title){
-    warnMsg += title;
-    warnMsg += "\n";
-  })
-  alert(warnMsg);
+  return notFoundCases
 }
 //TODO: 
 function selectCasesToRemove(suitePatch){
@@ -109,12 +108,7 @@ function selectCasesToRemove(suitePatch){
       notFoundCases.push(suitePatch.removes[pidx])
     }
   }
-  var warnMsg = "Can't find the following cases:\n";
-  notFoundCases.forEach(function(title){
-    warnMsg += title;
-    warnMsg += "\n";
-  })
-  alert(warnMsg);
+  return notFoundCases
 }
 
 function execute(){
@@ -123,7 +117,46 @@ function execute(){
 }
 
 function applySuitePatch(suitePatch){
-  selectCasesToAdd(suitePatch);
-  selectCasesToRemove(suitePatch)
+  addNotFound = selectCasesToAdd(suitePatch);
+  removeNotFound = selectCasesToRemove(suitePatch);
+  alert(formatSummary(suitePatch, addNotFound, removeNotFound));
+  clickConfirmButtons();
+  $('div#popup').css('display', 'none')
   //execute();
+}
+
+function formatSummary(suitePatch, addNotFoundCases, removeNotFoundCases){
+  var addCount = suitePatch['adds'].length
+  var removeCount = suitePatch['removes'].length
+  var addNotFoundCount = addNotFoundCases.length
+  var removeNotFoundCount = removeNotFoundCases.length
+  var msg = "Summary\n======================\n"
+  msg +=   ("Added\t" + (addCount - addNotFoundCount) + "\tcases\n")
+  msg +=   ("Removed\t" + (removeCount - removeNotFoundCount) + "\tcases\n")
+  msg +=   ("Can't find\t" + (addNotFoundCount) + "\tcases to add:\n")
+  addNotFoundCases.forEach(function(title){
+    msg += ("  * " + title + "\n");
+  })
+  msg +=   ("Can't find\t" + (removeNotFoundCount) + "\tcases to remove:\n")
+  removeNotFoundCases.forEach(function(title){
+    msg += ("  * " + title + "\n");
+  })
+  return msg
+}
+
+function clickConfirmButtons(){
+  $('button.action-include').click()
+  $('button.action-exclude').click()
+}
+
+function unique(arr) {
+  //credit: http://stackoverflow.com/questions/11688692/most-elegant-way-to-create-a-list-of-unique-items-in-javascript
+  var u = {}, a = [];
+  for(var i = 0, l = arr.length; i < l; ++i){
+    if(!u.hasOwnProperty(arr[i])) {
+      a.push(arr[i]);
+      u[arr[i]] = 1;
+    }
+  }
+  return a;
 }

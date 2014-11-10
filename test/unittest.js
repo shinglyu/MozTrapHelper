@@ -105,5 +105,15 @@ describe('Import suite from file', function(){
 
   });
 
+  it('Properly format the error message', function(){
+    var suitePatch = mockSuitePatch
+    var addNotFound = ["Add 001"]
+    var removeNotFound = ["Remove 001"]
+    var msg = formatSummary(suitePatch, addNotFound, removeNotFound)
+    //alert(msg)
+    var expectedMsg = 'Summary\n======================\nAdded\t1\tcases\nRemoved\t1\tcases\nCan\'t find\t1\tcases to add:\n  * Add 001\nCan\'t find\t1\tcases to remove:\n  * Remove 001\n';
+    expect(msg).to.be.equal(expectedMsg)
+  })
+
 });
 
