@@ -15,9 +15,9 @@ var fileSelectorHtml = '\
 </style> \
 <div id="popup"> \
   Select a file to import \
-  <br>\
-  <a href="https://rawgit.com/shinglyu/MozTrapAnnotator/master/doc/moztraphelper_doc.html#Suite%20File%20Syntax">File syntax guide</a>\
-  <br>\
+  <br> \ 
+  <a href="https://rawgit.com/shinglyu/MozTrapAnnotator/master/doc/moztraphelper_doc.html#Suite%20File%20Syntax">File syntax guide</a>\ 
+  <br> \
   <input type="file" id="files" name="files[]" /> \
 </div>\
 ';

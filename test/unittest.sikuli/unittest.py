@@ -10,5 +10,5 @@ click("1415596426407.png")
 type("slyu@mozilla.com")
 type(Key.ENTER)
 click("1415596476758.png")
-
+wait("1415599122847.png")
 
