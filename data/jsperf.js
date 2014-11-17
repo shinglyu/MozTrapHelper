@@ -27,3 +27,5 @@ onJqueryLoad(onScriptLoad)
 */
 //unsafeWindow.MT = null;
 
+var ich = unsafeWindow.ich;
+unsafeWindow.$('#text-filter').unbind()
