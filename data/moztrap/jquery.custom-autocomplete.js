@@ -82,7 +82,8 @@
 
             // Filter autocomplete suggestions, returning those that aren't duplicates.
             filterSuggestions = function () {
-                alert('injected')
+                filteredSuggestions = newSuggestions;
+                /*
                 filteredSuggestions = newSuggestions.filter(function () {
                     var thisSuggestionID = $(this).find('a').data('id'),
                         thisSuggestionName = $(this).find('a').data('name'),
@@ -104,6 +105,7 @@
                         }
                     }
                 });
+                */
             },
 
             // Create list of autocomplete suggestions from Ajax response or existing list of inputs
@@ -224,41 +226,42 @@
         textbox
             .keyup(function (e) {
                 // Updates suggestion-list if typed-text has changed
-                var updateSuggestionList = function () {
-                    var data,
-                        serializedData,
-                        extraData = {},
-                        extraDataName,
-                        extraDataVal;
-                    if (textbox.val() !== typedText && textbox.val() !== placeholder) {
-                        typedText = textbox.val();
-                        if (typedText.length && typedText.trim() !== '') {
-                            if (options.ajax) {
-                                if (options.extraDataName && options.extraDataFn) {
-                                    extraDataName = options.extraDataName;
-                                    extraDataVal = options.extraDataFn();
-                                    extraData[extraDataName] = extraDataVal;
-                                }
-                                data = $.extend({}, extraData, {text: typedText});
-                                serializedData = $.param(data);
-                                if (cache[serializedData]) {
-                                    updateSuggestions(cache[serializedData], true);
-                                } else {
-                                    ajaxCalls = ajaxCalls + 1;
-                                    $.get(options.url, data, function (response) {
-                                        ajaxResponses = ajaxResponses + 1;
-                                        cache[serializedData] = response;
-                                        updateSuggestions(response, false);
-                                    });
-                                }
-                            } else {
-                                updateSuggestions();
-                            }
-                        } else {
-                            suggestionList.empty().hide();
-                        }
-                    }
-                };
+                if(textbox[0].value.length >= options.minLength){
+                  var updateSuggestionList = function () {
+                      var data,
+                          serializedData,
+                          extraData = {},
+                          extraDataName,
+                          extraDataVal;
+                      if (textbox.val() !== typedText && textbox.val() !== placeholder) {
+                          typedText = textbox.val();
+                          if (typedText.length && typedText.trim() !== '') {
+                              if (options.ajax) {
+                                  if (options.extraDataName && options.extraDataFn) {
+                                      extraDataName = options.extraDataName;
+                                      extraDataVal = options.extraDataFn();
+                                      extraData[extraDataName] = extraDataVal;
+                                  }
+                                  data = $.extend({}, extraData, {text: typedText});
+                                  serializedData = $.param(data);
+                                  if (cache[serializedData]) {
+                                      updateSuggestions(cache[serializedData], true);
+                                  } else {
+                                      ajaxCalls = ajaxCalls + 1;
+                                      $.get(options.url, data, function (response) {
+                                          ajaxResponses = ajaxResponses + 1;
+                                          cache[serializedData] = response;
+                                          updateSuggestions(response, false);
+                                      });
+                                  }
+                              } else {
+                                  updateSuggestions();
+                              }
+                          } else {
+                              suggestionList.empty().hide();
+                          }
+                      }
+                  };
                 if (options.ajax || options.debounce) {
                     $(this).doTimeout('autocomplete', 200, function () {
                         updateSuggestionList();
@@ -266,6 +269,7 @@
                 } else {
                     updateSuggestionList();
                 }
+              }
             })
             .keydown(function (e) {
                 // If textbox has fake placeholder text, removes it on keydown for non-meta keys other than shift, ctrl, alt, caps, or esc.
@@ -615,7 +619,8 @@
         noInputsNote: false,                            // Set ``true`` to add "none" when no there are no inputs
         extraDataName: null,                            // Additional key to be sent with ajax-request
         extraDataFn: null,                              // Function which returns additional value to be sent with ajax-request
-        pinable: true                                   // Whether the result template supports pinning, as in a pinable filter.
+        pinable: true,                                   // Whether the result template supports pinning, as in a pinable filter.
+        minLength: 2
     };
 
 }(jQuery));
