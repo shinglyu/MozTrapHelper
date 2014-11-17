@@ -11,15 +11,8 @@
  *
  * Licensed under the New BSD License
  * See: http://www.opensource.org/licenses/bsd-license.php
- */
-(function ($) {
-
-    'use strict';
-
-    // Add cache to avoid repeated duplicate Ajax calls
-    var cache = {};
-
-    $.fn.customAutocomplete = function (opts) {
+n*/
+var customAutocomplete = function (opts) {
         var options = $.extend({}, $.fn.customAutocomplete.defaults, opts),
             keycodes = $.fn.customAutocomplete.keycodes,
             context = $(this),
@@ -82,6 +75,7 @@
 
             // Filter autocomplete suggestions, returning those that aren't duplicates.
             filterSuggestions = function () {
+                alert('injected');
                 filteredSuggestions = newSuggestions.filter(function () {
                     var thisSuggestionID = $(this).find('a').data('id'),
                         thisSuggestionName = $(this).find('a').data('name'),
@@ -566,9 +560,8 @@
             });
         });
     };
-
     // Store keycode variables for easier readability
-    $.fn.customAutocomplete.keycodes = {
+var keycodes = {
         SPACE: 32,
         ENTER: 13,
         TAB: 9,
@@ -582,10 +575,11 @@
         UP: 38,
         RIGHT: 39,
         DOWN: 40
-    };
+};
+    
 
     /* Setup plugin defaults */
-    $.fn.customAutocomplete.defaults = {
+  var defaults = {
         textbox: '#autocomplete-textbox',               // Selector for autocomplete textbox
         inputs: 'input[type="checkbox"]',               // Selector for inputs
         suggestionList: '.suggest',                     // Selector for list of autocomplete suggestions
@@ -593,9 +587,9 @@
         formActions: '.form-actions',                   // Select for form-actions (only needed if ``hideFormActions: true``)
         ajax: false,                                    // Set ``true`` if using Ajax to retrieve autocomplete suggestions
         url: null,                                      // Ajax url (only needed if ``ajax: true``)
-        triggerSubmit: function (context) {             // Function to be executed on ENTER in empty textbox
-            context.find('.form-actions button[type="submit"]').click();
-        },
+//        triggerSubmit: function (context) {             // Function to be executed on ENTER in empty textbox
+//            context.find('.form-actions button[type="submit"]').click();
+//        },
         hideFormActions: false,                         // Set ``true`` if form actions should be hidden when inputs are unchanged
         autoSubmit: false,                              // Set ``true`` if form should be submitted on every input change
         multipleCategories: false,                      // Set ``true`` if inputs are separated into categorized groups
@@ -617,4 +611,20 @@
         pinable: true                                   // Whether the result template supports pinning, as in a pinable filter.
     };
 
-}(jQuery));
+var triggerSubmit = function (context) {             // Function to be executed on ENTER in empty textbox
+            context.find('.form-actions button[type="submit"]').click();
+        };
+
+exportFunction(customAutocomplete, unsafeWindow.jQuery.fn, {defineAs: "customAutocomplete"});
+unsafeWindow.$.fn.customAutocomplete.defaults = cloneInto(defaults , unsafeWindow);
+unsafeWindow.$.fn.customAutocomplete.keycodes = cloneInto(keycodes, unsafeWindow);
+exportFunction(triggerSubmit, unsafeWindow.jQuery.fn.customAutocomplete, {defineAs: "triggerSubmit"});
+
+
+//        triggerSubmit: function (context) {             // Function to be executed on ENTER in empty textbox
+//            context.find('.form-actions button[type="submit"]').click();
+//        },
+//unsafeWindow.$.fn.customAutocomplete = exportFunction(myAutoComplete, unsafeWindow.jQuery.fn );
+//unsafeWindow.$.fn.customAutocomplete.keycodes = cloneInto(testObj, unsafeWindow);
+//exportFunction(myAutoComplete, unsafeWindow.jQuery.fn, {defineAs: "customAutocomplete"})
+//Component.utils.exportFunction(myAutoComplete, unsafeWindow, {defineAs: "foo"})

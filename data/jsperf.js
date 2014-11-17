@@ -1,5 +1,5 @@
 //console.log(unsafeWindow.MT);
-
+/*
 function onJqueryLoad(callback){
   if (typeof unsafeWindow.$ == 'undefined'){
     console.log('jQuery not ready')
@@ -24,5 +24,6 @@ function onScriptLoad(){
 }
 
 onJqueryLoad(onScriptLoad)
+*/
 //unsafeWindow.MT = null;
 
